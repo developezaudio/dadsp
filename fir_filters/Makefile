@@ -6,4 +6,4 @@ CC=g++
 
 all: $(PROGS)
 firtest: test.cpp
-	$(CC) -o test test.cpp $(INCLUDES) $(LIBS) $(CFLAGS)
+	$(CC) -o test test.cpp Biquad.cpp $(INCLUDES) $(LIBS) $(CFLAGS)

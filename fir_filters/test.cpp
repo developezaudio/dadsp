@@ -12,7 +12,14 @@ int main(int argc, const char *argv[]) {
     SF_INFO info_in, info_out;
     double* inbuf;
     inbuf = new double[bframes * 1];
-    double* outbuf;    
+    double* outbuf;
+
+    BiquadParams xbiquadParams;
+
+    xbiquadParams.a0 = 1.0; xbiquadParams.a1 = 0.73; xbiquadParams.a2 = 1.00;
+    xbiquadParams.b1 = -0.78; xbiquadParams.b2 = 0.88;
+
+    Biquad_kDirect myBiquad(xbiquadParams);
 
     if((fin = sf_open(argv[1], SFM_READ, &info_in)) != NULL) {
 
@@ -27,7 +34,7 @@ int main(int argc, const char *argv[]) {
                         do {
                             //printf("Loading buffer Num %d \n ... \n", bufferNum);
                             cnt = sf_read_double(fin, inbuf, bframes);
-                            
+                            myBiquad.processBuffer(inbuf, outbuf, bframes);
                             sf_write_double(fout,outbuf,cnt);
                         } while (cnt > 0);
                         endtime = clock();
